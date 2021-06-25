@@ -1,9 +1,14 @@
 import discord
-import os
-import time
+from discord import Color
 import discord.ext
 from discord.ext import commands, tasks
+
+import os
+import sys
+
+import time
 import random
+
 import deathMessage
 
 secret_token = os.environ['TOKEN']
@@ -15,7 +20,10 @@ bot.remove_command('help')
 async def on_ready():
     print("bot online") #will print "bot online" in the console when the bot is online
 
-#help commands:
+
+
+
+#HELP CMDS:
 
 @bot.command()
 async def help(ctx):
@@ -24,7 +32,6 @@ async def help(ctx):
 @bot.command()
 async def accountHelp(ctx):
   await ctx.channel.send("")
-
 
 @bot.command()
 async def searchHelp(ctx):
@@ -38,19 +45,68 @@ async def funHelp(ctx):
 async def interactHelp(ctx):
   await ctx.channel.send("Interact commands are ways to interact with friends:\n~hug(discord name) - Gives someone a hug.")
    
-#account commands:
 
-#search commands:
 
-#fun commands:
+
+#ACCOUNT CMDS:
+
+#start here
+
+
+
+
+#SEARCH CMDS:
+
+#start here
+
+
+
+
+#FUN CMDS:
+
+#start here
+
+
+
 
 @bot.command()
 async def ez(ctx):
   
-  ez_Quotes = ["no u", "who asked", "hello world"]
+  ez_Quotes = ["no u", "who asked", "hello world", "Anyone else really like Rick Astley", "When u fall in climing and shatter ur elbow it is funny."]
   chosen_Quote = ez_Quotes[random.randint(0, (len(ez_Quotes) - 1))]
 
   await ctx.channel.send(chosen_Quote)
+
+@bot.command()
+async def giftNitroTo(ctx, user:discord.Member):
+  time.sleep(3)
+
+  embed = discord.Embed()
+  embed.color=Color.red()
+  embed.description = "Confirm Nitro Gift [here](https://youtu.be/dQw4w9WgXcQ)"
+  await ctx.channel.send(embed=embed)
+
+@bot.command()
+async def giveTreeRoleTo(ctx, user:discord.Member):
+  await ctx.channel.send("Requesting Connection . . .")
+
+  time.sleep(random.randint(1, 3))
+
+  await ctx.channel.send("Processing Command . . .")
+
+  time.sleep(random.randint(1, 2))
+
+  await ctx.channel.send(f"Upgrading {user.name}'s Role . . .")
+
+  time.sleep(random.randint(2, 5))
+
+  await ctx.channel.send("Done! Follow this link to complete captcha and confirm you are a human.")
+
+  embed = discord.Embed()
+  embed.color = Color.blue()
+  embed.description = "[captcha](https://youtu.be/dQw4w9WgXcQ)"
+  await ctx.channel.send(embed=embed)
+  
 
 #interact commands:
 
@@ -58,6 +114,14 @@ async def ez(ctx):
 @bot.command()
 async def hug(ctx, user:discord.Member):
   await ctx.channel.send(f"**{ctx.message.author.name} hugs {user.name}**")
+
+@bot.command()
+async def slap(ctx, user:discord.Member):
+  if ctx.message.author.name == user.name:
+    await ctx.channel.send(f"**{ctx.message.author.name} commited suislap**")
+  else:
+    await ctx.channel.send(f"**{ctx.message.author.name} slapped {user.name}**")  
+
 
 @bot.command()
 async def hypixel(ctx):
