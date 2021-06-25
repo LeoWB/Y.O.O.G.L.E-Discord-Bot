@@ -5,9 +5,12 @@ from discord.ext import commands, tasks
 
 import os
 import sys
+import json
+import math
 
 import time
 import random
+import requests
 
 import deathMessage
 
@@ -108,7 +111,7 @@ async def giveTreeRoleTo(ctx, user:discord.Member):
   await ctx.channel.send(embed=embed)
   
 
-#interact commands:
+#INTERACT CMDS:
 
 
 @bot.command()
@@ -136,5 +139,34 @@ async def kill(ctx, user:discord.Member):
   await ctx.channel.send(the_Death_Message)
   
 
+
+
+#DISCOVER CMDS:
+
+@bot.command()
+async def ISSLocation(ctx):
+  issloc = requests.get("http://api.open-notify.org/iss-now.json")
+  data = issloc.json()
+  isslongitude = float(data["iss_position"]["longitude"])
+  isslatitude = float(data["iss_position"]["latitude"])
+
+  countries = requests.get("https://gist.githubusercontent.com/erdem/8c7d26765831d0f9a8c62f02782ae00d/raw/248037cd701af0a4957cce340dabb0fd04e38f4c/countries.json")
+
+  closestcondis = 0
+  closestcon = ""
+
+  for i in countries.json():
+    conlongitude = float(i["latlng"][0])
+    conlatitude = float(i["latlng"][1])
+
+    coorddif = [math.fabs(isslongitude - conlongitude), math.fabs(isslatitude - conlatitude)]
+
+    coorddis = math.sqrt((coorddif[0] ** 2) + (coorddif[1] ** 2))
+
+    if coorddis >= closestcondis:
+      closestcondis = coorddis
+      closestcon = i["name"]
+
+  await ctx.channel.send(f"Longitude: **{isslongitude}**\nLatitude: **{isslatitude}**\nEstimated Closest Country: **{closestcon}**")
 
 bot.run(os.getenv("TOKEN"))
